@@ -39,7 +39,7 @@ public class Conexion {
             this.Usuario1=usuario;
             this.Contraseña1=contraseña;
             Class.forName("com.mysql.jdbc.Driver");
-            String url="jdbc:mysql://72.3.165.53/389884_test?user=389884_test&amp;password=filiful";
+            String url="jdbc:mysql://localhost/comovamos";
             conecta=DriverManager.getConnection(url,Usuario1,Contraseña1);
             sentencia=conecta.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
         } catch(ClassCastException ex){
