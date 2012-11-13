@@ -35,24 +35,26 @@ LOCK TABLES `com_actividades` WRITE;
 
 UNLOCK TABLES;
 
-/*Table structure for table `com_detallesencuestas` */
+/*Table structure for table `com_detallepreguntas` */
 
-DROP TABLE IF EXISTS `com_detallesencuestas`;
+DROP TABLE IF EXISTS `com_detallepreguntas`;
 
-CREATE TABLE `com_detallesencuestas` (
+CREATE TABLE `com_detallepreguntas` (
   `DET_id` int(11) NOT NULL AUTO_INCREMENT,
-  `DET_resultado` float DEFAULT NULL,
-  `DET_Periodo` date DEFAULT NULL,
-  `DET_color` varchar(10) DEFAULT NULL,
-  `DET_Encuesta` int(11) NOT NULL,
+  `DET_Pregunta` varchar(100) NOT NULL,
+  `DET_Tipo` varchar(20) DEFAULT NULL,
+  `DET_Formula` varchar(100) DEFAULT NULL,
+  `DET_Resultado` varchar(100) NOT NULL,
+  `DET_Color` varchar(10) DEFAULT NULL,
+  `DET_Plantilla` int(11) NOT NULL,
   PRIMARY KEY (`DET_id`),
-  KEY `fk_COM_DetallesEncuestas_COM_Encuestas1_idx` (`DET_Encuesta`),
-  CONSTRAINT `fk_COM_DetallesEncuestas_COM_Encuestas1` FOREIGN KEY (`DET_Encuesta`) REFERENCES `com_plantila` (`PLA_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_COM_DetallesEncuestas_COM_Encuestas1_idx` (`DET_Plantilla`),
+  CONSTRAINT `fk_COM_DetallesEncuestas_COM_Encuestas1` FOREIGN KEY (`DET_Plantilla`) REFERENCES `com_plantilla` (`PLA_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-/*Data for the table `com_detallesencuestas` */
+/*Data for the table `com_detallepreguntas` */
 
-LOCK TABLES `com_detallesencuestas` WRITE;
+LOCK TABLES `com_detallepreguntas` WRITE;
 
 UNLOCK TABLES;
 
@@ -104,12 +106,12 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `com_indicador`;
 
 CREATE TABLE `com_indicador` (
+  `IND_flag` tinyint(1) DEFAULT '0',
   `IND_id` int(11) NOT NULL AUTO_INCREMENT,
-  `IND_Nombre` varchar(45) DEFAULT NULL,
-  `IND_Indicadorcol` varchar(45) DEFAULT NULL,
+  `IND_Nombre` varchar(45) NOT NULL,
   `IND_Formula` varchar(100) DEFAULT NULL,
   `IND_Color` varchar(10) DEFAULT NULL,
-  `IND_Padre` int(11) NOT NULL,
+  `IND_Padre` int(11) DEFAULT NULL,
   PRIMARY KEY (`IND_id`),
   KEY `fk_COM_Indicador_COM_Indicador1_idx` (`IND_Padre`),
   CONSTRAINT `fk_COM_Indicador_COM_Indicador1` FOREIGN KEY (`IND_Padre`) REFERENCES `com_indicador` (`IND_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -137,19 +139,16 @@ LOCK TABLES `com_perfiles` WRITE;
 
 UNLOCK TABLES;
 
-/*Table structure for table `com_plantila` */
+/*Table structure for table `com_plantilla` */
 
-DROP TABLE IF EXISTS `com_plantila`;
+DROP TABLE IF EXISTS `com_plantilla`;
 
-CREATE TABLE `com_plantila` (
+CREATE TABLE `com_plantilla` (
+  `PLA_flag` tinyint(1) DEFAULT '0',
   `PLA_id` int(11) NOT NULL AUTO_INCREMENT,
-  `PLA_nomPlantilla` varchar(100) NOT NULL,
-  `PLA_descripcion` int(11) DEFAULT NULL,
-  `PLA_preguntaCalculada` varchar(100) DEFAULT NULL,
-  `PLA_preguntaNoCalculada` varchar(100) DEFAULT NULL,
-  `PLA_Tipo` varchar(45) DEFAULT NULL,
-  `PLA_FormulaCalculada` varchar(100) DEFAULT NULL,
-  `PLA_ColorFormula` varchar(10) DEFAULT NULL,
+  `PLA_NomPlantilla` varchar(100) NOT NULL,
+  `PLA_Descripcion` varchar(300) DEFAULT NULL,
+  `PLA_Periodo` datetime NOT NULL,
   `PLA_Indicador` int(11) NOT NULL,
   `PLA_Usuario` int(11) NOT NULL,
   PRIMARY KEY (`PLA_id`),
@@ -159,9 +158,9 @@ CREATE TABLE `com_plantila` (
   CONSTRAINT `fk_COM_Plantila_COM_Indicador1` FOREIGN KEY (`PLA_Indicador`) REFERENCES `com_indicador` (`IND_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-/*Data for the table `com_plantila` */
+/*Data for the table `com_plantilla` */
 
-LOCK TABLES `com_plantila` WRITE;
+LOCK TABLES `com_plantilla` WRITE;
 
 UNLOCK TABLES;
 
@@ -192,7 +191,7 @@ CREATE TABLE `com_region` (
   `REG_Encuesta` int(11) NOT NULL,
   PRIMARY KEY (`REG_id`),
   KEY `fk_COM_Zonas_COM_Encuestas1_idx` (`REG_Encuesta`),
-  CONSTRAINT `fk_COM_Zonas_COM_Encuestas1` FOREIGN KEY (`REG_Encuesta`) REFERENCES `com_plantila` (`PLA_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_COM_Zonas_COM_Encuestas1` FOREIGN KEY (`REG_Encuesta`) REFERENCES `com_plantilla` (`PLA_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*Data for the table `com_region` */
